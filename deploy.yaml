@@ -1,9 +1,11 @@
 -
     name: 'Deploy web application and database'
     hosts: server
+    become: yes
+    become_user: root
     tasks:
         - name: 'Install all the dependant packages using yum ansible module'
-          yum: 
+          yum:
             name:
                 - firewalld
                 - mariadb-server
@@ -11,21 +13,23 @@
                 - php
                 - php-mysql
                 - git
-            state: present
+            state: installed
         - name: 'Start the services'
           service:
-            name:
-                - firewalld
-                - mariadb
-                - httpd
+            name: "{{ item }}"
             state: started
+          with_items:
+            - firewalld
+            - mariadb
+            - httpd
         - name: 'Download git code'
-          command: "git clone {{ item }}" 
-          witj_items:
+          command: "git clone {{ item }}"
+          args:
+            creates: /tmp/test
+          with_items:
             - https://github.com/kodekloudhub/learning-app-ecommerce.git /var/www/html/
             - https://github.com/Mukezz/AnsibleProject1.git /Ansible/project1/
         - name: 'Database creation'
           shell: /Ansible/project1/db.sh >> /tmp/db.log
           args:
             creates: /tmp/db.log
-
