@@ -23,3 +23,7 @@
           shell: /Ansible/project1/db.sh >> /tmp/db.log
           args:
             creates: /tmp/db.log
+        - name: 'Download git code'
+          command: 
+            cmd: git clone https://github.com/kodekloudhub/learning-app-ecommerce.git /var/www/html/
+            
