@@ -1,0 +1,2 @@
+
+server ansible_host=server1.xyz.com ansible_connection=ssh ansible_user=ec2-user ansible_ssh_pass=ec2-pass

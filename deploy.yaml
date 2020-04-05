@@ -1,0 +1,25 @@
+-
+    name: 'Deploy web application and database'
+    hosts: server
+    tasks:
+        - name: 'Install all the dependant packages using yum ansible module'
+          yum: 
+            name:
+                - firewalld
+                - mariadb-server
+                - httpd
+                - php
+                - php-mysql
+                - git
+            state: present
+        - name: 'Start the services'
+          service:
+            name:
+                - firewalld
+                - mariadb
+                - httpd
+            state: started
+        - name: 'Database creation'
+          shell: /Ansible/project1/db.sh >> /tmp/db.log
+          args:
+            creates: /tmp/db.log
